@@ -128,7 +128,7 @@ impl Drop for SemaphoreGuard<'_> {
 
 #[cfg(test)]
 mod tests {
-    use std::alloc::handle_alloc_error;
+    
     use std::io::{ErrorKind, Result};
 
     use ::function_name::named;
@@ -171,7 +171,7 @@ mod tests {
     #[test]
     #[named]
     fn decrements_and_increments() -> Result<()> {
-        let mut sem = test_semaphore!(1);
+        let sem = test_semaphore!(1);
         {
             let _ = sem.access()?;
         }
@@ -181,7 +181,7 @@ mod tests {
     #[test]
     #[named]
     fn try_access_succeeds_with_capacity() -> Result<()> {
-        let mut sem = test_semaphore!(1);
+        let sem = test_semaphore!(1);
         {
             let _ = sem.try_access()?;
         }
@@ -191,7 +191,7 @@ mod tests {
     #[test]
     #[named]
     fn try_access_fails_without_capacity() -> Result<()> {
-        let mut sem = test_semaphore!(0);
+        let sem = test_semaphore!(0);
         let result = sem.try_access().err().unwrap();
         assert_eq!(result.kind(), ErrorKind::WouldBlock);
         Ok(())
